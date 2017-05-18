@@ -1,18 +1,17 @@
 #include "Process.h"
 
-Process::Process(int id, const std::string name)
+Process::Process(int id, const std::string name) : name(name)
 {
 	this->id = id;
 	this->name = name;
 	this->pDuration = nullptr;
 }
 
-Process::Process(const Process& copy)
+Process::Process(const Process& copy) : name(copy.name)
 {
 	this->pDuration = nullptr;
 	delete this->pDuration;
 	this->id = copy.id;
-	this->name = copy.name;
 	this->pDuration = new Duration(*copy.pDuration);
 }
 

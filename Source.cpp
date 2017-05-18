@@ -2,6 +2,9 @@
 #include "Process.h"
 #include "ProcessChain.h"
 
+/// <summary>
+/// Use case for process chain.
+/// </summary>
 int main()
 {
 	Duration testDuration(10, 20, 10);
@@ -21,6 +24,7 @@ int main()
 	testProcessChain.Insert(testProcess1);
 	testProcessChain.Insert(testProcess2);
 	std::cout << std::endl;
+	// Try adding process again to process chain
 	std::cout << "Try adding process with ID " << testProcess1.GetID() << " again..." << std::endl;
 	if (!testProcessChain.Insert(testProcess1))
 	{

@@ -14,19 +14,16 @@ Duration ProcessChain::CalcChainDuration()
 	return returnDuration;
 }
 
-ProcessChain::ProcessChain(const std::string name)
+ProcessChain::ProcessChain(const std::string name) : name(name)
 {
-	this->name = name;
 	for (int i = 0; i < MaxProcesses; i++)
 	{
 		this->pChain[i] = nullptr;
 	}
 }
 
-ProcessChain::ProcessChain(const ProcessChain& copy)
+ProcessChain::ProcessChain(const ProcessChain& copy) : processList(copy.processList)
 {
-	this->name = copy.name;
-	this->processList = copy.processList;
 	this->processListIterator = copy.processListIterator;
 	for (int i = 0; i < MaxProcesses; i++)
 	{
