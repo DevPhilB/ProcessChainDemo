@@ -71,22 +71,30 @@ void ProcessChain::ChangeProcess(int id, Process& newProcess)
 {
 	int i = 0;
 	int j = 0;
-	this->processList.clear();
-	while (i < 100)
+	int k = 0;
+	for (i = 0; i < MaxProcesses; i++)
 	{
-		if (this->pChain[i] != nullptr && this->pChain[i]->GetID() == id)
+		if (this->pChain[i] != nullptr)
 		{
-			this->pChain[i] = &newProcess;
-			while (j < 100)
+			delete this->pChain[i];
+		}
+	}
+	this->processList.clear();
+	while (j < 100)
+	{
+		if (this->pChain[j] != nullptr && this->pChain[j]->GetID() == id)
+		{
+			this->pChain[j] = &newProcess;
+			while (k < 100)
 			{
-				if (this->pChain[j] != nullptr)
+				if (this->pChain[k] != nullptr)
 				{
-					this->processList.push_back(*this->pChain[j]);
+					this->processList.push_back(*this->pChain[k]);
 				}
-				j++;
+				k++;
 			}
 		}
-		i++;
+		j++;
 	}
 }
 

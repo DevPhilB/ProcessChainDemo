@@ -9,7 +9,6 @@ Process::Process(int id, const std::string name) : name(name)
 
 Process::Process(const Process& copy) : name(copy.name)
 {
-	this->pDuration = nullptr;
 	delete this->pDuration;
 	this->id = copy.id;
 	this->pDuration = new Duration(*copy.pDuration);
@@ -22,8 +21,8 @@ int Process::GetID()
 
 Process::~Process()
 {
-	this->pDuration = nullptr;
 	delete this->pDuration;
+	this->pDuration = nullptr;
 }
 
 Process & Process::operator=(const Process& rhs)
@@ -47,7 +46,8 @@ const Duration& Process::TimeSpan()
 
 void Process::TimeSpan(Duration& arg)
 {
-	this->pDuration = &arg;
+	delete this->pDuration;
+	this->pDuration = new Duration(arg);
 }
 
 std::ostream& operator<<(std::ostream& os, const Process& arg)
