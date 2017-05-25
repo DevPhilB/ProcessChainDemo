@@ -3,12 +3,9 @@
 Duration ProcessChain::CalcChainDuration()
 {
 	Duration tmpDuration(0, 0, 0);
-	for (int i = 0; i < MaxProcesses; i++)
+	for (int i = 0; i < this->pChainCounter; i++)
 	{
-		if (i < this->processList.size() && pChain[i] != nullptr)
-		{
-			tmpDuration = tmpDuration + this->pChain[i]->TimeSpan();
-		}
+		tmpDuration = tmpDuration + this->pChain[i]->TimeSpan();
 	}
 	Duration returnDuration = tmpDuration;
 	return returnDuration;
@@ -20,14 +17,19 @@ ProcessChain::ProcessChain(const std::string name) : name(name)
 	{
 		this->pChain[i] = nullptr;
 	}
+	this->pChainCounter = 0;
 }
 
-ProcessChain::ProcessChain(const ProcessChain& copy) : processList(copy.processList)
+ProcessChain::ProcessChain(const ProcessChain& copy) : name(copy.name)
 {
-	this->processListIterator = copy.processListIterator;
-	for (int i = 0; i < MaxProcesses; i++)
+	this->pChainCounter = copy.pChainCounter;
+	for (int i = 0; i < copy.MaxProcesses; i++)
 	{
-		if (i < copy.processList.size() && copy.pChain[i] != nullptr)
+		if (copy.pChain[i] == nullptr)
+		{
+			this->pChain[i] = nullptr;
+		}
+		else
 		{
 			this->pChain[i] = new Process(*copy.pChain[i]);
 		}
@@ -36,12 +38,9 @@ ProcessChain::ProcessChain(const ProcessChain& copy) : processList(copy.processL
 
 ProcessChain::~ProcessChain()
 {
-	for (int i = 0; i < MaxProcesses; i++)
+	for (int i = 0; i < this->MaxProcesses; i++)
 	{
-		if (i < this->processList.size())
-		{
-			delete this->pChain[i];
-		}
+		delete this->pChain[i];
 	}
 }
 
@@ -55,7 +54,7 @@ bool ProcessChain::Insert(Process& arg)
 		if (this->pChain[i] == nullptr)
 		{
 			this->pChain[i] = pProcess;
-			this->processList.push_back(process);
+			pChainCounter++;
 			return true;
 		}
 		else if (this->pChain[i]->GetID() == arg.GetID())
@@ -70,31 +69,17 @@ bool ProcessChain::Insert(Process& arg)
 void ProcessChain::ChangeProcess(int id, Process& newProcess)
 {
 	int i = 0;
-	int j = 0;
-	int k = 0;
 	for (i = 0; i < MaxProcesses; i++)
 	{
 		if (this->pChain[i] != nullptr)
 		{
-			delete this->pChain[i];
-		}
-	}
-	this->processList.clear();
-	while (j < 100)
-	{
-		if (this->pChain[j] != nullptr && this->pChain[j]->GetID() == id)
-		{
-			this->pChain[j] = &newProcess;
-			while (k < 100)
+			if (this->pChain[i]->GetID() == id)
 			{
-				if (this->pChain[k] != nullptr)
-				{
-					this->processList.push_back(*this->pChain[k]);
-				}
-				k++;
+				delete this->pChain[i];
+				this->pChain[i] = &newProcess;
+				break;
 			}
 		}
-		j++;
 	}
 }
 
@@ -109,31 +94,32 @@ ProcessChain& ProcessChain::operator=(const ProcessChain & rhs)
 		delete pChain[i];
 	}
 	this->name = rhs.name;
-	this->processList = rhs.processList;
-	this->processListIterator = rhs.processListIterator;
-	for (int i = 0; i < MaxProcesses; i++)
+	for (int i = 0; i < pChainCounter; i++)
 	{
-		if (rhs.pChain[i] != nullptr)
-		{
-			this->pChain[i] = new Process(*rhs.pChain[i]);
-		}
+		this->pChain[i] = new Process(*rhs.pChain[i]);
 	}
 	return *this;
 }
 
-bool CompareIDs(Process &first, Process &second)
+/// <summary>
+/// Method to compare two processes
+/// </summary>
+/// <param name="first">First process</param>
+/// <param name="second">Second process</param>
+/// <returns>True=First has higher ID | False=Second has higher ID</returns>
+bool CompareID(Process *first, Process *second)
 {
-	return (first.GetID() < second.GetID());
+	return (first->GetID() < second->GetID());
 }
 
 std::ostream& operator<<(std::ostream& os, const ProcessChain& arg)
 {
 	ProcessChain processChainCopy = arg;
-	processChainCopy.processList.sort(CompareIDs);
-	os << processChainCopy.name << " ";
-	for (processChainCopy.processListIterator = processChainCopy.processList.begin(); processChainCopy.processListIterator != processChainCopy.processList.end(); ++processChainCopy.processListIterator)
+	os << processChainCopy.name << ":" << std::endl;
+	std::sort(processChainCopy.pChain, processChainCopy.pChain+arg.pChainCounter, CompareID);
+	for (int i = 0; i < processChainCopy.pChainCounter; i++)
 	{
-		os << "ID: " <<  *processChainCopy.processListIterator << " ";
+		os << "ID: " << *processChainCopy.pChain[i] << " ";
 	}
 	os << std::endl;
 	os << "Complete Duration: " << processChainCopy.CalcChainDuration();

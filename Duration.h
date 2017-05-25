@@ -7,10 +7,26 @@
 /// </summary>
 class Duration
 {
+	/// <summary>
+	/// Hours
+	/// </summary>
 	unsigned int h = 0;
+
+	/// <summary>
+	/// Minutes
+	/// </summary>
 	unsigned int m = 0;
+
+	/// <summary>
+	/// Seconds
+	/// </summary>
 	unsigned int s = 0;
+
+	/// <summary>
+	/// Is duration invalid?
+	/// </summary>
 	bool isDirty = false;
+
 public:
 	/// <summary>
 	/// Default constructor
@@ -31,12 +47,12 @@ public:
 	Duration(unsigned int h, unsigned int m, unsigned int s);
 
 	/// <summary>
-	/// Deconstructor
+	/// Virtual destructor
 	/// </summary>
 	virtual ~Duration() {};
 
 	/// <summary>
-	/// Method to set dirty flag
+	/// Method to set duration invalid
 	/// </summary>
 	void SetDirty();
 

@@ -2,7 +2,7 @@
 
 #include <string>
 #include <iostream>
-#include <list>
+#include <algorithm>
 
 #include "Process.h"
 
@@ -11,17 +11,32 @@
 /// </summary>
 class ProcessChain
 {
+	/// <summary>
+	/// Maximum amount of processes for the chain
+	/// </summary>
 	static const int MaxProcesses = 100;
+
+	/// <summary>
+	/// Process chain name
+	/// </summary>
 	std::string name;
+
+	/// <summary>
+	/// Array of processes as pointer (Max 100 elements)
+	/// </summary>
 	Process *pChain[MaxProcesses];
-	std::list<Process> processList; // List for sorting processes
-	std::list<Process>::iterator processListIterator;
+
+	/// <summary>
+	/// Counter for array to increase performance and error-avoidance
+	/// </summary>
+	int pChainCounter;
 
 	/// <summary>
 	/// Method to calculate complete process chain duration
 	/// </summary>
 	/// <returns>Complete duration</returns>
 	Duration CalcChainDuration();
+
 public:
 	/// <summary>
 	/// Explicit constructor

@@ -10,9 +10,21 @@
 /// </summary>
 class Process
 {
+	/// <summary>
+	/// Process ID
+	/// </summary>
 	int id;
+
+	/// <summary>
+	/// Process name
+	/// </summary>
 	std::string name;
+
+	/// <summary>
+	/// Process duration as pointer
+	/// </summary>
 	Duration* pDuration = nullptr;
+
 public:
 	/// <summary>
 	/// Constructor with ID and name
@@ -33,9 +45,8 @@ public:
 	int GetID();
 
 	/// <summary>
-	/// Method to get process ID
+	/// Virtual destructor
 	/// </summary>
-	/// <returns>Process ID</returns>
 	virtual ~Process();
 
 	/// <summary>
@@ -54,7 +65,6 @@ public:
 	/// <summary>
 	/// Get process duration reference
 	/// </summary>
-	/// <returns>Duration reference</returns>
 	const Duration& TimeSpan();
 
 	/// <summary>

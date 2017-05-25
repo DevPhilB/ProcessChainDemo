@@ -22,10 +22,9 @@ int Process::GetID()
 Process::~Process()
 {
 	delete this->pDuration;
-	this->pDuration = nullptr;
 }
 
-Process & Process::operator=(const Process& rhs)
+Process& Process::operator=(const Process& rhs)
 {
 	if (this == &rhs)
 	{

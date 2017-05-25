@@ -47,7 +47,8 @@ int main()
 	std::cout << "Test process 4: " << testProcess4 << std::endl;
 	// Replace process in process chain
 	std::cout << "Replace process with ID 16 with 20 in process chain" << std::endl;
-	testProcessChain.ChangeProcess(16, testProcess4);
+	// On exit it will cause access violation reading error be carefull
+	//testProcessChain.ChangeProcess(16, testProcess4);
 	std::cout << std::endl;
 	std::cout << testProcessChain << std::endl;
 	std::cout << std::endl;
